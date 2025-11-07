@@ -1,6 +1,36 @@
-document.querySelector(".icon-menu").addEventListener("click", function (event) {
-  event.preventDefault();
-  document.body.classList.toggle("menu-open");
+// Enhanced mobile menu functionality
+const menuIcon = document.querySelector(".icon-menu");
+const menuBody = document.querySelector(".menu__body");
+
+if (menuIcon) {
+  menuIcon.addEventListener("click", function (event) {
+    event.preventDefault();
+    const isOpen = document.body.classList.toggle("menu-open");
+
+    // Update aria-expanded for accessibility
+    menuIcon.setAttribute("aria-expanded", isOpen);
+
+    // Prevent body scroll when menu is open
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  });
+}
+
+// Close menu when clicking on a menu link
+const menuLinks = document.querySelectorAll(".menu__link");
+menuLinks.forEach(link => {
+  link.addEventListener("click", function() {
+    if (document.body.classList.contains("menu-open")) {
+      document.body.classList.remove("menu-open");
+      document.body.style.overflow = "";
+      if (menuIcon) {
+        menuIcon.setAttribute("aria-expanded", "false");
+      }
+    }
+  });
 });
 
 const spollerButtons = document.querySelectorAll("[data-spoller] .spollers-faq__button");
